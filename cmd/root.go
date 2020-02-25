@@ -81,7 +81,7 @@ func initConfig() {
       os.Exit(1)
     }
 
-    cfgFile = home + "/.medic.yaml"
+    cfgFile = home + "/.kubester.yaml"
   }
 
   // If the config file doesn't exist, create it

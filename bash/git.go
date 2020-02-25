@@ -6,6 +6,7 @@ import "fmt"
 func GitStash() string { return "git stash" }
 func GitResetHard() string { return "git reset HEAD --hard" }
 func GitClean() string { return "git clean -fd" }
+func GitOnboard() string { return "git submodule update --init" }
 
 // Recursive
 func GitFetchRecurse() string { return "git fetch --recurse-submodules" }

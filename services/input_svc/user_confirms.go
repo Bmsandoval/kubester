@@ -31,8 +31,6 @@ func UserConfirms(prompt string) (bool, error) {
 
 		fmt.Printf("%c\n", char)
 
-		tm.Clear()
-		tm.Flush()
 		if key == keyboard.KeyEsc || char == 'n' || char == 'N' {
 			return false, nil
 		} else if char == 'y' || char == 'Y' {

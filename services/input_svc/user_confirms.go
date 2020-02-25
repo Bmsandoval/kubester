@@ -2,7 +2,6 @@ package kube_svc
 
 import (
 	"fmt"
-	tm "github.com/buger/goterm"
 	"github.com/eiannone/keyboard"
 )
 

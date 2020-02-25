@@ -3,6 +3,8 @@ module github.com/bmsandoval/kubester
 go 1.12
 
 require (
+	github.com/buger/goterm v0.0.0-20181115115552-c206103e1f37
+	github.com/eiannone/keyboard v0.0.0-20190314115158-7169d0afeb4f
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/ktr0731/go-fuzzyfinder v0.1.2
 	github.com/mattn/go-colorable v0.1.2 // indirect

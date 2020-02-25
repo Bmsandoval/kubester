@@ -10,16 +10,16 @@ import (
 	"os/exec"
 )
 
-var ResetAllCmd = &cobra.Command{
-	Use:   "reset_all",
-	Aliases: []string{"ra"},
-	Short: "reset current branch and submodules",
-	Long: `Resets all tracked files in base repo and all sub repos to last commit`,
-	Run: ResetAll,
+var WreckCmd = &cobra.Command{
+	Use:   "wreck",
+	Aliases: []string{"w"},
+	Short: "runs the `Reset` and `Clean` command",
+	Long: `Resets all tracked files and removes all untracked files`,
+	Run: Wreck,
 }
 
 
-func ResetAll(_ *cobra.Command, _ []string) {
+func Wreck(_ *cobra.Command, _ []string) {
 	kube_svc.UserConfirms("Are you sure you want to do this? This will reset all tracked files in project. Recommend first stashing changes")
 	// Check for necessary stuff
 	if _, err := exec.LookPath("git"); err != nil {
@@ -31,13 +31,21 @@ func ResetAll(_ *cobra.Command, _ []string) {
 	if err := utils.Exec(command); err != nil {
 		fmt.Println(err.Error())
 	}
-
 	command = bash.GitResetHardRecurse()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+
+	command = bash.GitClean()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+	command = bash.GitCleanRecurse()
 	if err := utils.Exec(command); err != nil {
 		fmt.Println(err.Error())
 	}
 }
 
 func init() {
-	GitCmd.AddCommand(ResetAllCmd)
+	GitCmd.AddCommand(WreckCmd)
 }

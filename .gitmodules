@@ -1,12 +1,12 @@
-[submodule "submodules/ekube"]
-	path = submodules/ekube
+[submodule "deployments/submodules/ekube"]
+	path = deployments/submodules/ekube
 	url = git@github.com:bmsandoval/ekube.git
 	branch = master
-[submodule "submodules/kubert"]
-	path = submodules/kubert
+[submodule "deployments/submodules/kubert"]
+	path = deployments/submodules/kubert
 	url = git@github.com:bmsandoval/kubert.git
 	branch = master
-[submodule "submodules/kubest"]
-	path = submodules/kubest
+[submodule "deployments/submodules/kubest"]
+	path = deployments/submodules/kubest
 	url = git@github.com:bmsandoval/kubest.git
 	branch = master

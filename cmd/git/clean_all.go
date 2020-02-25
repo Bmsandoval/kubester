@@ -12,7 +12,7 @@ import (
 
 var CleanAllCmd = &cobra.Command{
 	Use:   "clean_all",
-	Aliases: []string{"ra"},
+	Aliases: []string{"ca"},
 	Short: "clean current branch and submodules",
 	Long: `Removes untracked files and directories in base repo and all sub repos`,
 	Run: CleanAll,

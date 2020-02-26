@@ -27,6 +27,7 @@ func Wreck(_ *cobra.Command, _ []string) {
 		return
 	}
 
+	// RESET
 	command := bash.GitResetHard()
 	if err := utils.Exec(command); err != nil {
 		fmt.Println(err.Error())
@@ -36,11 +37,32 @@ func Wreck(_ *cobra.Command, _ []string) {
 		fmt.Println(err.Error())
 	}
 
+	// CLEAN
 	command = bash.GitClean()
 	if err := utils.Exec(command); err != nil {
 		fmt.Println(err.Error())
 	}
 	command = bash.GitCleanRecurse()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+
+	// SWITCH TO MASTER
+	command = bash.GitBranch()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+	command = bash.GitBranchRecurse()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+
+	// FETCH AND PULL
+	command = bash.GitFetchRecurse()
+	if err := utils.Exec(command); err != nil {
+		fmt.Println(err.Error())
+	}
+	command = bash.GitPullRecurse()
 	if err := utils.Exec(command); err != nil {
 		fmt.Println(err.Error())
 	}

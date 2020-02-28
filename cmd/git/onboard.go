@@ -24,5 +24,5 @@ func Onboard(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(OnboardCmd)
+	GitCmds.AddCommand(OnboardCmd)
 }

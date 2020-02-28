@@ -69,5 +69,5 @@ func Wreck(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(WreckCmd)
+	GitCmds.AddCommand(WreckCmd)
 }

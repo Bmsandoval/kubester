@@ -39,5 +39,5 @@ func CleanAll(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(CleanAllCmd)
+	GitCmds.AddCommand(CleanAllCmd)
 }

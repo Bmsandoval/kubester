@@ -37,5 +37,5 @@ func FetchPull(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(FetchPullCmd)
+	GitCmds.AddCommand(FetchPullCmd)
 }

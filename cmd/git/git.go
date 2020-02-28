@@ -4,7 +4,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var GitCmd = &cobra.Command{
+var GitCmds = &cobra.Command{
 	Use:   "git",
 	Aliases: []string{"g"},
 	Short: "git command start",

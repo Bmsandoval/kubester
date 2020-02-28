@@ -39,5 +39,5 @@ func ResetAll(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(ResetAllCmd)
+	GitCmds.AddCommand(ResetAllCmd)
 }

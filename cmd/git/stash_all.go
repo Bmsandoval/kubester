@@ -37,5 +37,5 @@ func StashAll(_ *cobra.Command, _ []string) {
 }
 
 func init() {
-	GitCmd.AddCommand(StashAllCmd)
+	GitCmds.AddCommand(StashAllCmd)
 }

@@ -3,6 +3,7 @@ package cmd
 import (
   "fmt"
   "github.com/bmsandoval/kubester/cmd/git"
+  "github.com/bmsandoval/kubester/cmd/helm"
   "github.com/spf13/cobra"
   "os"
 )
@@ -47,5 +48,6 @@ func init() {
   // when this action is called directly.
   rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-  rootCmd.AddCommand(git.GitCmd)
+  rootCmd.AddCommand(git.GitCmds)
+  rootCmd.AddCommand(helm.HelmCmds)
 }

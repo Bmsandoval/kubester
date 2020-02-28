@@ -15,8 +15,49 @@ limitations under the License.
 */
 package main
 
-import "github.com/bmsandoval/kubester/cmd"
+import (
+  "fmt"
+  "github.com/bmsandoval/kubester/cmd"
+  "github.com/bmsandoval/kubester/config"
+  "github.com/mitchellh/go-homedir"
+  "github.com/spf13/cobra"
+  "os"
+)
 
 func main() {
+  cobra.OnInitialize(initConfig)
+
   cmd.Execute()
+}
+
+// initConfig reads in config file and ENV variables if set.
+func initConfig() {
+  home, err := homedir.Dir()
+  if err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
+
+  cfgFile := home + "/.kubester.yaml"
+
+  // If the config file doesn't exist, create it
+  if _, err := os.Stat(cfgFile); os.IsNotExist(err) {
+    fmt.Println("Required config not found at:", cfgFile)
+    fmt.Println("Creating initial file:", cfgFile)
+    if err := config.GenerateSampleConfigYaml(cfgFile); err != nil {
+      fmt.Println(err.Error())
+      panic("error creating the missing config file")
+    }
+  }
+
+  // Once we know the config file exists, load it in
+  var conf *config.Configurations
+  conf, err = config.LoadConfigYaml(cfgFile)
+  if err != nil {
+    fmt.Println(err.Error())
+    panic("error opening file")
+  }
+
+  // Store the config in viper
+  config.StoreConfigInViper(conf)
 }

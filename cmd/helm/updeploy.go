@@ -2,16 +2,16 @@ package helm
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/bmsandoval/kubester/bash"
 	"github.com/bmsandoval/kubester/config"
 	"github.com/bmsandoval/kubester/utils"
 	"github.com/spf13/cobra"
 	"io/ioutil"
-	"log"
 )
 
-var DeployCommand = &cobra.Command{
+var DeployCmd = &cobra.Command{
 	Use:   "updeploy",
 	Aliases: []string{"de"},
 	Short: "deploy environment",
@@ -19,32 +19,72 @@ var DeployCommand = &cobra.Command{
 	Run: Deploy,
 }
 
-
-func Deploy(_ *cobra.Command, _ []string) {
-	auxiliaryReleasables := GetReleasableAuxiliaryDeployments()
-	if len(auxiliaryReleasables) < 1 { return }
-
-	log.Printf("%+v", auxiliaryReleasables)
+type deploymentInformation struct {
+	Name string
+	FilePath string
 }
 
 
-func GetReleasableAuxiliaryDeployments() []string {
+func Deploy(_ *cobra.Command, _ []string) {
+	auxiliaryReleasables, err := GetReleasableAuxiliaryDeployments()
+	if err != nil { panic(err) }
+
+	for _, r := range auxiliaryReleasables {
+		if err := utils.Exec(bash.HelmInstall(r.Name, r.FilePath)); err != nil {
+			panic(err)
+		}
+	}
+
+	primaryReleasables, err := GetReleasablePrimaryDeployments()
+	if err != nil { panic(err) }
+
+	for _, r := range primaryReleasables {
+		if err := utils.Exec(bash.HelmInstall(r.Name, r.FilePath)); err != nil {
+			panic(err)
+		}
+	}
+}
+
+func GetReleasablePrimaryDeployments() ([]deploymentInformation, error) {
+	var configs = config.GetConfigFromViper()
+	deploymentPath := fmt.Sprintf("%s/deployments/submodules",configs.KubesterConfig.ProjectFilePath)
+
+	// List all releasable items
+	files, err := ioutil.ReadDir(deploymentPath)
+	if err != nil {
+		return nil, err
+	}
+
+	var releasables []deploymentInformation
+	for _, f := range files {
+		releasables = append(releasables, deploymentInformation{
+			Name:     fmt.Sprintf("dev-%s", f.Name()),
+			FilePath: fmt.Sprintf("%s/%s", deploymentPath, f.Name()),
+		})
+	}
+
+	return releasables, nil
+}
+
+func GetReleasableAuxiliaryDeployments() ([]deploymentInformation, error) {
 	// List all released items
 	err, out, errout := utils.ExecGetOutput(bash.HelmList())
-	if err != nil { panic(err) }
-	if errout != "" { panic(errout) }
+	if err != nil { return nil, err }
+	if errout != "" { return nil, errors.New(errout) }
 	// Get releases in a well defined format
 	var releases []bash.HelmListObj
 	json.Unmarshal([]byte(out), &releases)
 
 	// List all releasable items
 	var configs = config.GetConfigFromViper()
-	files, err := ioutil.ReadDir(fmt.Sprintf("%s/deployments/",configs.KubesterConfig.ProjectFilePath))
+	releasePath := fmt.Sprintf("%s/deployments/",configs.KubesterConfig.ProjectFilePath)
+
+	files, err := ioutil.ReadDir(releasePath)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	var releasables []string
+	var releasables []deploymentInformation
 	for _, f := range files {
 		// skip submodules directory
 		if f.Name() == "submodules" {
@@ -57,12 +97,15 @@ func GetReleasableAuxiliaryDeployments() []string {
 				// if auxiliary already released, ignore it
 				continue
 			}
-			releasables = append(releasables, releasableName)
+			releasables = append(releasables, deploymentInformation{
+				Name:     releasableName,
+				FilePath: fmt.Sprintf("%s/%s", releasePath, f.Name()),
+			})
 		}
 	}
-	return releasables
+	return releasables, nil
 }
 
 func init() {
-	HelmCmds.AddCommand(DeployCommand)
+	HelmCmds.AddCommand(DeployCmd)
 }

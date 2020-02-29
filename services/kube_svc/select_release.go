@@ -1,32 +1,33 @@
 package kube_svc
 
 import (
+	"encoding/json"
 	"errors"
 	"github.com/bmsandoval/kubester/bash"
 	"github.com/bmsandoval/kubester/utils"
 	"github.com/ktr0731/go-fuzzyfinder"
-	"strings"
 )
 
 func SelectRelease() (*string, error) {
-	err, out, errout := utils.ExecGetOutput(bash.KubeListReleasesByName)
-	if err != nil {
-		return nil, err
+	// List all released items
+	err, out, errout := utils.ExecGetOutput(bash.HelmList())
+	if err != nil { return nil, err }
+	if errout != "" { return nil, errors.New(errout) }
+	// Get releases in a well defined format
+	var releases []bash.HelmListObj
+	json.Unmarshal([]byte(out), &releases)
+
+	var releaseNames []string
+	for _, r := range releases {
+		releaseNames = append(releaseNames, r.Name)
 	}
-	if errout != "" {
-		return nil, errors.New("error getting releases, maybe kubernetes hasn't been started yet")
-	}
-	trimmedOutput := strings.TrimSpace(out)
-	splitOutput := strings.Split(trimmedOutput,"\n")
-	if len(splitOutput) < 1 {
-		return nil, errors.New("no releases found")
-	}
-	selected, err := fuzzyfinder.Find(splitOutput,
+
+	selected, err := fuzzyfinder.Find(releaseNames,
 		func(i int) string {
-			return splitOutput[i]
+			return releaseNames[i]
 		})
 	if err != nil {
 		return nil, errors.New("no release selected, aborting")
 	}
-	return &splitOutput[selected], nil
+	return &releaseNames[selected], nil
 }

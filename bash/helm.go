@@ -2,8 +2,8 @@ package bash
 
 import "fmt"
 
-func HelmInstall(app string) string { return fmt.Sprintf("helm upgrade --install dev-%s", app) }
-func HelmDelete(app string) string  { return fmt.Sprintf("helm delete dev-%s", app) }
+func HelmInstall(app string, path string) string { return fmt.Sprintf("helm upgrade --install %s %s/chart", app, path) }
+func HelmDelete(app string) string  { return fmt.Sprintf("helm delete %s", app) }
 func HelmList() string              { return "helm ls -a -o json" }
 
 type HelmListObj struct {

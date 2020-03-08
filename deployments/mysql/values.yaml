@@ -18,22 +18,9 @@ imagePullPolicy: IfNotPresent
 # fullnameOverride: ""
 
 mysql:
-  database: kubester
   replicaCount: 1
-
-  ## Password for MySQL root user
-  ##
-  mysqlRootPassword: password
-
-  ## Username/password for MySQL replication user
-  ##
-  mysqlReplicationUser: repl
-  # mysqlReplicationPassword:
-
-  # Create a database user
-  #
-  mysqlUser: user
-  mysqlPassword: password
+  image: mysql
+  imageTag: 8.0
 
 
   ## Allow unauthenticated access, uncomment to enable

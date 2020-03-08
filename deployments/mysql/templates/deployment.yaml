@@ -18,11 +18,9 @@ spec:
         tier: mysql
     spec:                           # The spec for the containers that will be run inside the Pods in this deployment
       containers:
-        - image: mysql:5.6            # The container image
+        - image: {{ .Values.mysql.image }}:{{ .Values.mysql.imageTag}}            # The container image
           name: mysql
           env:                        # Environment variables passed to the container
-            - name: MYSQL_DATABASE
-              value: {{ .Values.mysql.database }}
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:                # Read environment variables from kubernetes secrets
                 secretKeyRef:
@@ -44,7 +42,12 @@ spec:
           volumeMounts:
             - name: mysql-persistent-storage  # This name should match the name specified in `volumes.name`
               mountPath: /var/lib/mysql
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
       volumes:                       # A PersistentVolume is mounted as a volume to the Pod
         - name: mysql-persistent-storage
           persistentVolumeClaim:
             claimName: mysql-pv-claim
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config

@@ -4,6 +4,7 @@ import (
   "fmt"
   "github.com/bmsandoval/kubester/cmd/git"
   "github.com/bmsandoval/kubester/cmd/helm"
+  "github.com/bmsandoval/kubester/cmd/kube"
   "github.com/spf13/cobra"
   "os"
 )
@@ -50,4 +51,5 @@ func init() {
 
   rootCmd.AddCommand(git.GitCmds)
   rootCmd.AddCommand(helm.HelmCmds)
+  rootCmd.AddCommand(kube.KubeCmds)
 }

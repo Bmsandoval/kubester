@@ -26,11 +26,12 @@ type deploymentInformation struct {
 
 
 func Deploy(_ *cobra.Command, _ []string) {
-	auxiliaryReleasables, err := GetReleasableAuxiliaryDeployments()
+	ctxt := "dev"
+	auxiliaryReleasables, err := GetReleasableAuxiliaryDeployments(ctxt)
 	if err != nil { panic(err) }
 
 	for _, r := range auxiliaryReleasables {
-		if err := utils.Exec(bash.HelmInstall(r.Name, r.FilePath)); err != nil {
+		if err := utils.Exec(bash.HelmInstallAuxiliary(ctxt, r.Name, r.FilePath)); err != nil {
 			panic(err)
 		}
 	}
@@ -39,7 +40,7 @@ func Deploy(_ *cobra.Command, _ []string) {
 	if err != nil { panic(err) }
 
 	for _, r := range primaryReleasables {
-		if err := utils.Exec(bash.HelmInstall(r.Name, r.FilePath)); err != nil {
+		if err := utils.Exec(bash.HelmInstall(ctxt, r.Name, r.FilePath)); err != nil {
 			panic(err)
 		}
 	}
@@ -58,7 +59,7 @@ func GetReleasablePrimaryDeployments() ([]deploymentInformation, error) {
 	var releasables []deploymentInformation
 	for _, f := range files {
 		releasables = append(releasables, deploymentInformation{
-			Name:     fmt.Sprintf("dev-%s", f.Name()),
+			Name:     fmt.Sprintf("%s", f.Name()),
 			FilePath: fmt.Sprintf("%s/%s", deploymentPath, f.Name()),
 		})
 	}
@@ -66,7 +67,7 @@ func GetReleasablePrimaryDeployments() ([]deploymentInformation, error) {
 	return releasables, nil
 }
 
-func GetReleasableAuxiliaryDeployments() ([]deploymentInformation, error) {
+func GetReleasableAuxiliaryDeployments(ctxt string) ([]deploymentInformation, error) {
 	// List all released items
 	err, out, errout := utils.ExecGetOutput(bash.HelmList())
 	if err != nil { return nil, err }
@@ -77,7 +78,7 @@ func GetReleasableAuxiliaryDeployments() ([]deploymentInformation, error) {
 
 	// List all releasable items
 	var configs = config.GetConfigFromViper()
-	releasePath := fmt.Sprintf("%s/deployments/",configs.KubesterConfig.ProjectFilePath)
+	releasePath := fmt.Sprintf("%s/deployments",configs.KubesterConfig.ProjectFilePath)
 
 	files, err := ioutil.ReadDir(releasePath)
 	if err != nil {
@@ -92,13 +93,13 @@ func GetReleasableAuxiliaryDeployments() ([]deploymentInformation, error) {
 		}
 		// collect any releases that aren't already released
 		for _, r := range releases {
-			releasableName := fmt.Sprintf("dev-%s", f.Name())
+			releasableName := fmt.Sprintf("%s-%s", ctxt, f.Name())
 			if r.Name ==  releasableName {
 				// if auxiliary already released, ignore it
 				continue
 			}
 			releasables = append(releasables, deploymentInformation{
-				Name:     releasableName,
+				Name:     f.Name(),
 				FilePath: fmt.Sprintf("%s/%s", releasePath, f.Name()),
 			})
 		}

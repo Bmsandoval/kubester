@@ -8,11 +8,11 @@ import (
 )
 
 var RemoveCmd = &cobra.Command{
-	Use:   "remove",
+	Use:     "remove",
 	Aliases: []string{"re"},
-	Short: "remove environment",
-	Long: ``,
-	Run: Remove,
+	Short:   "remove environment",
+	Long:    ``,
+	Run:     Remove,
 }
 
 func Remove(_ *cobra.Command, _ []string) {

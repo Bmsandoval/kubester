@@ -10,13 +10,12 @@ import (
 )
 
 var StartCmd = &cobra.Command{
-	Use:   "start",
+	Use:     "start",
 	Aliases: []string{"s"},
-	Short: "start minikube",
-	Long: ``,
-	Run: StartMinikube,
+	Short:   "start minikube",
+	Long:    ``,
+	Run:     StartMinikube,
 }
-
 
 func StartMinikube(_ *cobra.Command, _ []string) {
 	// Check for necessary stuff

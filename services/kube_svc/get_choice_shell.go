@@ -16,7 +16,7 @@ func GetChoiceShell(pod string) (string, error) {
 		return "", errors.New("error getting pods, maybe kubernetes hasn't been started yet")
 	}
 	trimmedOutput := strings.TrimSpace(out)
-	splitOutput := strings.Split(trimmedOutput,"\n")
+	splitOutput := strings.Split(trimmedOutput, "\n")
 	if len(splitOutput) < 1 {
 		return "", errors.New("no pods found")
 	}

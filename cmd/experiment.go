@@ -9,18 +9,17 @@ import (
 )
 
 var ExperimentCmd = &cobra.Command{
-	Use:   "experiment",
+	Use:     "experiment",
 	Aliases: []string{"exp"},
-	Short: "a command endpoint to experiment with stuff",
-	Long: ``,
-	Run: Experiment,
+	Short:   "a command endpoint to experiment with stuff",
+	Long:    ``,
+	Run:     Experiment,
 }
-
 
 func Experiment(_ *cobra.Command, _ []string) {
 	var configs = config.GetConfigFromViper()
 
-	files, err := ioutil.ReadDir(fmt.Sprintf("%s/deployments/submodules/",configs.KubesterConfig.ProjectFilePath))
+	files, err := ioutil.ReadDir(fmt.Sprintf("%s/deployments/submodules/", configs.KubesterConfig.ProjectFilePath))
 	if err != nil {
 		log.Fatal(err)
 	}

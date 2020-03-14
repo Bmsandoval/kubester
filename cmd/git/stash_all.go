@@ -10,13 +10,12 @@ import (
 )
 
 var StashAllCmd = &cobra.Command{
-	Use:   "stash_all",
+	Use:     "stash_all",
 	Aliases: []string{"sa"},
-	Short: "stash current branch and submodules",
-	Long: ``,
-	Run: StashAll,
+	Short:   "stash current branch and submodules",
+	Long:    ``,
+	Run:     StashAll,
 }
-
 
 func StashAll(_ *cobra.Command, _ []string) {
 	// Check for necessary stuff

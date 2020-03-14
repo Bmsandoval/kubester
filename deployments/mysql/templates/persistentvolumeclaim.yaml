@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim        # Create a PersistentVolumeClaim to request a
 metadata:                          # Claim name and labels
   name: mysql-pv-claim
   labels:
-    app: mysql-app
+    {{- include "labels" . | nindent 4 }}
 spec:                              # Access mode and resource limits
   storageClassName: standard       # Request a certain storage class
   accessModes:

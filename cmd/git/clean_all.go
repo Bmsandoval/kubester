@@ -11,13 +11,12 @@ import (
 )
 
 var CleanAllCmd = &cobra.Command{
-	Use:   "clean_all",
+	Use:     "clean_all",
 	Aliases: []string{"ca"},
-	Short: "clean current branch and submodules",
-	Long: `Removes untracked files and directories in base repo and all sub repos`,
-	Run: CleanAll,
+	Short:   "clean current branch and submodules",
+	Long:    `Removes untracked files and directories in base repo and all sub repos`,
+	Run:     CleanAll,
 }
-
 
 func CleanAll(_ *cobra.Command, _ []string) {
 	kube_svc.UserConfirms("Are you sure you want to do this? This will remove all untracked files. Recommend stashing first")

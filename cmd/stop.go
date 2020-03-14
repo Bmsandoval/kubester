@@ -10,13 +10,12 @@ import (
 )
 
 var StopCmd = &cobra.Command{
-	Use:   "stop",
+	Use:     "stop",
 	Aliases: []string{"s"},
-	Short: "stop minikube",
-	Long: ``,
-	Run: StopMinikube,
+	Short:   "stop minikube",
+	Long:    ``,
+	Run:     StopMinikube,
 }
-
 
 func StopMinikube(_ *cobra.Command, _ []string) {
 	// Check for necessary stuff

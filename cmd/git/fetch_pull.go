@@ -10,13 +10,12 @@ import (
 )
 
 var FetchPullCmd = &cobra.Command{
-	Use:   "fetch_pull",
+	Use:     "fetch_pull",
 	Aliases: []string{"fp"},
-	Short: "fetch and pull current branch and submodules",
-	Long: `git fetch --recurse-submodules && git pull --recurse-submodules`,
-	Run: FetchPull,
+	Short:   "fetch and pull current branch and submodules",
+	Long:    `git fetch --recurse-submodules && git pull --recurse-submodules`,
+	Run:     FetchPull,
 }
-
 
 func FetchPull(_ *cobra.Command, _ []string) {
 	// Check for necessary stuff

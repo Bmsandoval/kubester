@@ -5,7 +5,6 @@ import (
 	"github.com/eiannone/keyboard"
 )
 
-
 func PrintConfirmationMenu(prompt string) {
 	fmt.Println(prompt)
 	fmt.Println("Y for yes, or N for no")

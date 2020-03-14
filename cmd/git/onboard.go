@@ -8,13 +8,12 @@ import (
 )
 
 var OnboardCmd = &cobra.Command{
-	Use:   "onboard",
+	Use:     "onboard",
 	Aliases: []string{"on"},
-	Short: "Onboard git stuff",
-	Long: `basically just inits the submodules`,
-	Run: Onboard,
+	Short:   "Onboard git stuff",
+	Long:    `basically just inits the submodules`,
+	Run:     Onboard,
 }
-
 
 func Onboard(_ *cobra.Command, _ []string) {
 	command := bash.GitOnboard()

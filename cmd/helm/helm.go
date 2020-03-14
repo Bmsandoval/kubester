@@ -5,11 +5,10 @@ import (
 )
 
 var HelmCmds = &cobra.Command{
-	Use:   "helm",
+	Use:     "helm",
 	Aliases: []string{"h"},
-	Short: "helm command start",
-	Run: Helm,
+	Short:   "helm command start",
+	Run:     Helm,
 }
 
-
-func Helm(_ *cobra.Command, _ []string) { }
+func Helm(_ *cobra.Command, _ []string) {}

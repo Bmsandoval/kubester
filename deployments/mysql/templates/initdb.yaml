@@ -6,8 +6,8 @@ data:
   initdb.sql: |
     CREATE DATABASE IF NOT EXISTS ekube;
     CREATE USER 'ekube'@'%' IDENTIFIED BY 'ekubepassword';
-    GRANT INSERT, UPDATE, SELECT, DELETE ON ekube.* TO 'ekube'@'%';
+    GRANT CREATE, INSERT, UPDATE, SELECT, DELETE ON ekube.* TO 'ekube'@'%';
 
     CREATE DATABASE IF NOT EXISTS kubert;
     CREATE USER 'kubert'@'%' IDENTIFIED BY 'kubertpassword';
-    GRANT INSERT, UPDATE, SELECT, DELETE ON kubert.* TO 'kubert'@'%';
+    GRANT CREATE, INSERT, UPDATE, SELECT, DELETE ON kubert.* TO 'kubert'@'%';

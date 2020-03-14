@@ -8,11 +8,11 @@ import (
 )
 
 var ContextCmd = &cobra.Command{
-	Use:   "context",
+	Use:     "context",
 	Aliases: []string{"ctx"},
-	Short: "kubectl config use-context",
-	Long: ``,
-	Run: Context,
+	Short:   "kubectl config use-context",
+	Long:    ``,
+	Run:     Context,
 }
 
 func Context(_ *cobra.Command, _ []string) {

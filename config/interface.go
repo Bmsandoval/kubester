@@ -9,7 +9,7 @@ import (
 )
 
 type Configurations struct {
-	KubesterConfig	KubesterConfig
+	KubesterConfig KubesterConfig
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -54,7 +54,6 @@ func GetConfigFromViper() *Configurations {
 	config := viper.Get("configs")
 	return config.(*Configurations)
 }
-
 
 //func (c *Configurations) Configure(v viper.Viper) {
 //	c.DatabaseConfig = GetDatabaseConfig(v)

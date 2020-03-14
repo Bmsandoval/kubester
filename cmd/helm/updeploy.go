@@ -12,23 +12,24 @@ import (
 )
 
 var DeployCmd = &cobra.Command{
-	Use:   "updeploy",
+	Use:     "updeploy",
 	Aliases: []string{"de"},
-	Short: "deploy environment",
-	Long: ``,
-	Run: Deploy,
+	Short:   "deploy environment",
+	Long:    ``,
+	Run:     Deploy,
 }
 
 type deploymentInformation struct {
-	Name string
+	Name     string
 	FilePath string
 }
-
 
 func Deploy(_ *cobra.Command, _ []string) {
 	ctxt := "dev"
 	auxiliaryReleasables, err := GetReleasableAuxiliaryDeployments(ctxt)
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	for _, r := range auxiliaryReleasables {
 		if err := utils.Exec(bash.HelmInstallAuxiliary(ctxt, r.Name, r.FilePath)); err != nil {
@@ -37,7 +38,9 @@ func Deploy(_ *cobra.Command, _ []string) {
 	}
 
 	primaryReleasables, err := GetReleasablePrimaryDeployments()
-	if err != nil { panic(err) }
+	if err != nil {
+		panic(err)
+	}
 
 	for _, r := range primaryReleasables {
 		if err := utils.Exec(bash.HelmInstall(ctxt, r.Name, r.FilePath)); err != nil {
@@ -48,7 +51,7 @@ func Deploy(_ *cobra.Command, _ []string) {
 
 func GetReleasablePrimaryDeployments() ([]deploymentInformation, error) {
 	var configs = config.GetConfigFromViper()
-	deploymentPath := fmt.Sprintf("%s/deployments/submodules",configs.KubesterConfig.ProjectFilePath)
+	deploymentPath := fmt.Sprintf("%s/deployments/submodules", configs.KubesterConfig.ProjectFilePath)
 
 	// List all releasable items
 	files, err := ioutil.ReadDir(deploymentPath)
@@ -70,15 +73,19 @@ func GetReleasablePrimaryDeployments() ([]deploymentInformation, error) {
 func GetReleasableAuxiliaryDeployments(ctxt string) ([]deploymentInformation, error) {
 	// List all released items
 	err, out, errout := utils.ExecGetOutput(bash.HelmList())
-	if err != nil { return nil, err }
-	if errout != "" { return nil, errors.New(errout) }
+	if err != nil {
+		return nil, err
+	}
+	if errout != "" {
+		return nil, errors.New(errout)
+	}
 	// Get releases in a well defined format
 	var releases []bash.HelmListObj
 	json.Unmarshal([]byte(out), &releases)
 
 	// List all releasable items
 	var configs = config.GetConfigFromViper()
-	releasePath := fmt.Sprintf("%s/deployments",configs.KubesterConfig.ProjectFilePath)
+	releasePath := fmt.Sprintf("%s/deployments", configs.KubesterConfig.ProjectFilePath)
 
 	files, err := ioutil.ReadDir(releasePath)
 	if err != nil {
@@ -94,7 +101,7 @@ func GetReleasableAuxiliaryDeployments(ctxt string) ([]deploymentInformation, er
 		// collect any releases that aren't already released
 		for _, r := range releases {
 			releasableName := fmt.Sprintf("%s-%s", ctxt, f.Name())
-			if r.Name ==  releasableName {
+			if r.Name == releasableName {
 				// if auxiliary already released, ignore it
 				continue
 			}

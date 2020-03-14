@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment                    # Type of the kubernetes resource
 metadata:
-  name: mysql-app           # Name of the deployment
+  name: {{ include "fullname" . }}
   labels:                           # Labels applied to this deployment
-    app: mysql-app
+    {{- include "labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:                    # This deployment applies to the Pods matching the specified labels
-      app: mysql-app
+      {{- include "selectorLabels" . | nindent 6 }}
       tier: mysql
   strategy:
     type: Recreate
   template:                         # Template for the Pods in this deployment
     metadata:
       labels:                       # Labels to be applied to the Pods in this deployment
-        app: mysql-app
+        {{- include "selectorLabels" . | nindent 8 }}
         tier: mysql
     spec:                           # The spec for the containers that will be run inside the Pods in this deployment
+      serviceAccountName: {{ include "serviceAccountName" . }}
       containers:
         - image: {{ .Values.mysql.image }}:{{ .Values.mysql.imageTag}}            # The container image
           name: mysql
@@ -37,7 +38,7 @@ spec:
                   name: {{ template "fullname" . }}
                   key: mysql-user-pass
           ports:
-            - containerPort: 3306        # The port that the container exposes
+            - containerPort: {{ .Values.service.port}}        # The port that the container exposes
               name: mysql
           volumeMounts:
             - name: mysql-persistent-storage  # This name should match the name specified in `volumes.name`

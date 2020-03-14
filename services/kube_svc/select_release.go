@@ -11,8 +11,12 @@ import (
 func SelectRelease() (*string, error) {
 	// List all released items
 	err, out, errout := utils.ExecGetOutput(bash.HelmList())
-	if err != nil { return nil, err }
-	if errout != "" { return nil, errors.New(errout) }
+	if err != nil {
+		return nil, err
+	}
+	if errout != "" {
+		return nil, errors.New(errout)
+	}
 	// Get releases in a well defined format
 	var releases []bash.HelmListObj
 	json.Unmarshal([]byte(out), &releases)

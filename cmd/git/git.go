@@ -5,11 +5,10 @@ import (
 )
 
 var GitCmds = &cobra.Command{
-	Use:   "git",
+	Use:     "git",
 	Aliases: []string{"g"},
-	Short: "git command start",
-	Run: Git,
+	Short:   "git command start",
+	Run:     Git,
 }
 
-
-func Git(_ *cobra.Command, _ []string) { }
+func Git(_ *cobra.Command, _ []string) {}

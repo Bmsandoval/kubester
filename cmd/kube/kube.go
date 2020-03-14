@@ -5,14 +5,13 @@ import (
 )
 
 var KubeCmds = &cobra.Command{
-	Use:   "kube",
+	Use:     "kube",
 	Aliases: []string{"k"},
-	Short: "kubectl ...",
-	Run: Kube,
+	Short:   "kubectl ...",
+	Run:     Kube,
 }
 
-
-func Kube(_ *cobra.Command, _ []string) { }
+func Kube(_ *cobra.Command, _ []string) {}
 
 //TODO: reset everything including database. AKA - kubewreck
 // this is required only if you want to delete your database completely

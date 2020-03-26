@@ -4,10 +4,6 @@ metadata:
   name: mysql-initdb-config
 data:
   initdb.sql: |
-    CREATE DATABASE IF NOT EXISTS ekube;
-    CREATE USER 'ekube'@'%' IDENTIFIED BY 'ekubepassword';
-    GRANT CREATE, INSERT, UPDATE, SELECT, DELETE ON ekube.* TO 'ekube'@'%';
-
-    CREATE DATABASE IF NOT EXISTS kubert;
-    CREATE USER 'kubert'@'%' IDENTIFIED BY 'kubertpassword';
-    GRANT CREATE, INSERT, UPDATE, SELECT, DELETE ON kubert.* TO 'kubert'@'%';
+    CREATE DATABASE IF NOT EXISTS {{ .Values.Ekube.Schema }};
+    CREATE USER '{{ .Values.Ekube.User }}'@'%' IDENTIFIED BY '{{ .Values.Ekube.Pass }}';
+    GRANT CREATE, INSERT, UPDATE, SELECT, DELETE ON {{ .Values.Ekube.Schema }}.* TO '{{ .Values.Ekube.User }}'@'%';
